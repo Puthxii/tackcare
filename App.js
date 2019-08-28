@@ -16,6 +16,9 @@ import LoginScreen from './LoginScreen';
 import Call from './pages/Call';
 import Booking from './pages/Booking';
 import Booked from './pages/Booked';
+import called from './pages/called';
+import EditBook from './pages/EditBook';
+
 
 
 
@@ -123,6 +126,22 @@ const App = createStackNavigator({
     screen: Booked,
     navigationOptions: {
       title: 'Booked',
+      headerStyle: { backgroundColor: '#95E8D7' },
+      headerTintColor: '#8971D0',
+    },
+  },
+  called: {
+    screen: called,
+    navigationOptions: {
+      title: 'History Call',
+      headerStyle: { backgroundColor: '#95E8D7' },
+      headerTintColor: '#8971D0',
+    },
+  },
+  EditBook: {
+    screen: EditBook,
+    navigationOptions: {
+      title: 'Edit Book',
       headerStyle: { backgroundColor: '#95E8D7' },
       headerTintColor: '#8971D0',
     },

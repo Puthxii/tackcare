@@ -15,6 +15,7 @@ export default class Call extends React.Component {
       book_car: '',
       book_start: '',
       book_end: '',
+      date: '',
     };
   }
 
@@ -24,13 +25,13 @@ export default class Call extends React.Component {
      this.setState({ department: department })
   }
 
-  register_user = () => {
+  register_user = () => { 
     var that = this;
     const { book_ser } = this.state;
     const { book_car } = this.state;
     const { book_start } = this.state;
     const { book_end } = this.state;
-    //alert(user_name, user_contact, user_address);
+    // alert(date);
     if (book_ser) {
       if (book_car) {
         if (book_start) {
@@ -75,7 +76,7 @@ export default class Call extends React.Component {
   };
   render() {
     return (
-      <View style={{ backgroundColor: '#D7BDE2', flex: 1 }}>
+      <View style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
         <ScrollView keyboardShouldPersistTaps="handled">
         <Picker style={[styles.picker]} itemStyle={styles.pickerItem} selectedValue = {this.state.department} onValueChange = {book_ser => this.setState({ book_ser })}>
                <Picker.Item label = "Select Service" value = "" />
@@ -159,6 +160,7 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     marginTop: 16,
+    borderRadius : 10
 
   },
   pickerItem: {

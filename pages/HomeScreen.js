@@ -1,6 +1,8 @@
 /*Home Screen With buttons to navigate to different options*/
 import React from 'react';
-import { View, Text, StyleSheet,Button, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Badge } from 'native-base';
+
 import { FlatGrid } from 'react-native-super-grid';
 import Mybutton from './components/Mybutton';
 import SmallButton from './components/SmallButton';
@@ -28,6 +30,20 @@ export default class HomeScreen extends React.Component {
             txn.executeSql('DROP TABLE IF EXISTS book', []);
             txn.executeSql(
               'CREATE TABLE IF NOT EXISTS book(book_id INTEGER PRIMARY KEY AUTOINCREMENT, book_ser VARCHAR(20), book_car VARCHAR(20), book_start VARCHAR(20), book_end VARCHAR(20))',
+              []
+            );
+          }
+        }
+      );
+      txn.executeSql(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='booked'",
+        [],
+        function(tx, res) {
+          console.log('item:', res.rows.length);
+          if (res.rows.length == 0) {
+            txn.executeSql('DROP TABLE IF EXISTS booked', []);
+            txn.executeSql(
+              'CREATE TABLE IF NOT EXISTS booked(book_id INTEGER PRIMARY KEY AUTOINCREMENT, book_ser VARCHAR(20), book_car VARCHAR(20), book_start VARCHAR(20), book_end VARCHAR(20), date VARCHAR(255))',
               []
             );
           }
@@ -80,11 +96,11 @@ export default class HomeScreen extends React.Component {
     // ];
     return (
       
-      <ScrollView
+      <Container
       
         style={{
           flex: 1,
-          backgroundColor: '#D7BDE2',
+          backgroundColor: '#FFFFFF',
           flexDirection: 'column',
           // justifyContent: 'flex-start',
         }}>
@@ -145,8 +161,8 @@ export default class HomeScreen extends React.Component {
           customClick={() => this.props.navigation.navigate('Booking')}
         />
           <SmallButton
-          title="List"
-          customClick={() => this.props.navigation.navigate('Booked')}
+          title="Other"
+          // customClick={() => this.props.navigation.navigate('Booked')}
         />
         </View>
 
@@ -164,9 +180,31 @@ export default class HomeScreen extends React.Component {
           customClick={() => this.props.navigation.navigate('LoginScreen')}
         />
         </View> */}
-        
+        <Content />
+          <Footer>
+          <FooterTab style = {{ backgroundColor: '#957DAD'}}>
+            <Button active vertical>
+              {/* <Badge><Text>2</Text></Badge> */}
+              <Icon active name="home" />
+              <Text>home</Text>
+            </Button>
+            <Button vertical  onPress={() => this.props.navigation.navigate('called')}>
+              <Icon name="time" />
+              <Text>histoy</Text>
+            </Button>
+            <Button badge vertical onPress={() => this.props.navigation.navigate('Booked')}>
+              <Badge ><Text>2</Text></Badge>
+              <Icon name="book" />
+              <Text>book</Text>
+            </Button>
+            <Button vertical>
+              <Icon name="person" />
+              <Text>Contact</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
 
-      </ScrollView>
+      </Container>
     );
   }
 }

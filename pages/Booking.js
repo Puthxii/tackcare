@@ -16,7 +16,7 @@
         book_car: '',
         book_start: '',
         book_end: '',
-        date: "15-07-2019",
+        date: '',
       };
     }
   
@@ -32,36 +32,41 @@
       const { book_car } = this.state;
       const { book_start } = this.state;
       const { book_end } = this.state;
+      const { date } = this.state;
       //alert(user_name, user_contact, user_address);
       if (book_ser) {
         if (book_car) {
           if (book_start) {
             if (book_end) {
-              db.transaction(function(tx) {
-                tx.executeSql(
-                  'INSERT INTO book (book_ser, book_car, book_start, book_end) VALUES (?,?,?,?)',
-                  [book_ser, book_car, book_start, book_end],
-                  (tx, results) => {
-                    console.log('Results', results.rowsAffected);
-                    if (results.rowsAffected > 0) {
-                      Alert.alert(
-                        'Success',
-                        'You are Calling Successfully, Plese wait 15 min',
-                        [
-                          {
-                            text: 'Ok',
-                            onPress: () =>
-                              that.props.navigation.navigate('HomeScreen'),
-                          },
-                        ],
-                        { cancelable: false }
-                      );
-                    } else {
-                      alert('Call Failed');
+              if (date){
+                db.transaction(function(tx) {
+                  tx.executeSql(
+                    'INSERT INTO booked (book_ser, book_car, book_start, book_end, date) VALUES (?,?,?,?,?)',
+                    [book_ser, book_car, book_start, book_end, date],
+                    (tx, results) => {
+                      console.log('Results', results.rowsAffected);
+                      if (results.rowsAffected > 0) {
+                        Alert.alert(
+                          'Success',
+                          'You are Calling Successfully, Plese wait 15 min',
+                          [
+                            {
+                              text: 'Ok',
+                              onPress: () =>
+                                that.props.navigation.navigate('HomeScreen'),
+                            },
+                          ],
+                          { cancelable: false }
+                        );
+                      } else {
+                        alert('Call Failed');
+                      }
                     }
-                  }
-                );
-              });
+                  );
+                });
+              } else {
+                alert('Please fill date');
+              }
             } else {
               alert('Please fill end point');
             }
@@ -115,7 +120,6 @@
                 placeholder="End point"
                 onChangeText={book_end => this.setState({ book_end })}
                 maxLength={10}
-                keyboardType="numeric"
                 style={{ padding:10 }}
               />
               {/* <Mytextinput
@@ -126,14 +130,15 @@
                 multiline={true}
                 style={{ textAlignVertical: 'top',padding:10 }}
               /> */}
+              
               <DatePicker
               style={styles.input}
               date={this.state.date} //initial date from state
-              mode="date" //The enum of date, datetime and time
-              placeholder="select date"
-              format="DD-MM-YYYY"
-              minDate="01-01-1919"
-              maxDate="01-01-2019"
+              mode="datetime" //The enum of date, datetime and time
+              placeholder="select date and time"
+              format="YYYY-MM-DD hh:mm:ss a"
+              minDate={new Date()}
+              maxDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)}
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
@@ -148,7 +153,7 @@
               onDateChange={(date) => {this.setState({date: date})}}
               />
               <MButton
-                title="Call"
+                title="Booking"
                 customClick={this.register_user.bind(this)}
               />
             </KeyboardAvoidingView>

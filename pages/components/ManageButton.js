@@ -1,7 +1,7 @@
 /*Custom Button*/
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-const MButton = props => {
+const ManageButton = props => {
   return (
     <TouchableOpacity style={styles.button} onPress={props.customClick}>
       <Text style={styles.text}>{props.title}</Text>
@@ -9,19 +9,18 @@ const MButton = props => {
   );
 };
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#FF6961',
+    button: {
+    // alignItems: 'center',
+    backgroundColor: '#ff8364',
     color: '#ffffff',
     padding: 10,
-    marginTop: 16,
-    marginLeft: 100,
-    marginRight: 100,
-    borderRadius : 16
-
+    marginTop: 10,
+    borderRadius : 10
+    // marginLeft: 35,
+    // marginRight: 35,
   },
   text: {
-    color: '#572D15',
-  },
+    color: '#ffffff',
+  }
 });
-export default MButton;
+export default ManageButton;

@@ -13,7 +13,8 @@ const Mytextinput = props => {
         height: 40,
         borderColor: '#8971D0',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        marginBottom: 20
+        marginBottom: 20,
+        borderRadius : 10
       }}>
       <TextInput
         underlineColorAndroid="transparent"
