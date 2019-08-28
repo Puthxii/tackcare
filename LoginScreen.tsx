@@ -48,7 +48,9 @@ export default class LoginScreen extends React.Component<{}, State> {
             onChangeText={this.handlePasswordChange}
             placeholder={strings.PASSWORD_PLACEHOLDER}
           />
-          <Buttons label={strings.LOGIN} onPress={this.handleLoginPress} />
+          <Buttons label={strings.LOGIN} 
+          onPress={() => this.props.navigation.navigate('HomeScreen')} 
+          />
 
           <Buttons
           label={strings.REGIS}

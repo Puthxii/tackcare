@@ -21,8 +21,8 @@ import Booked from './pages/Booked';
 
 
 const App = createStackNavigator({
-  HomeScreen: {
-    screen: HomeScreen,
+  LoginScreen: {
+    screen: LoginScreen,
     // navigationOptions: {
     //   title: 'Take Care',
     //   headerStyle: { backgroundColor: '#95E8D7' },
@@ -37,7 +37,15 @@ const App = createStackNavigator({
     // },
    
 
-    
+  
+  },
+  HomeScreen: {
+    screen: HomeScreen,
+    navigationOptions: {
+      title: 'Take Care',
+      headerStyle: { backgroundColor: '#95E8D7' },
+      headerTintColor: '#8971D0',
+    },
   },
   View: {
     screen: ViewUser,
@@ -84,7 +92,7 @@ const App = createStackNavigator({
     navigationOptions: {
       title: 'Register',
       headerStyle: { backgroundColor: '#95E8D7' },
-      headerTintColor: '#ffffff',
+      headerTintColor: '#8971D0',
     },
   },
   LoginScreen: {
