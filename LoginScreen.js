@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  TouchableHighlight,
-  Image,
-  Alert
-} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert} from 'react-native';
+import imageLogo from "./img/logo_transparent.png";
+import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-export default class Register extends Component {
+export default class LoginScreen extends Component {
 
   constructor(props) {
     super(props);
     state = {
-      fullName: '',
       email   : '',
       password: '',
     }
@@ -28,40 +20,14 @@ export default class Register extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/ios-glyphs/30/000000/user--v1.png'}}/>
-          <TextInput style={styles.inputs}
-              placeholder="name"
-              keyboardType="email-address"
-              underlineColorAndroid='transparent'
-              onChangeText={(fullName) => this.setState({fullName})}/>
-        </View>
-
+        <Image source={imageLogo} style={styles.logo} />
         <View style={styles.inputContainer}>
           <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/material-rounded/24/000000/phone--v1.png'}}/>
           <TextInput style={styles.inputs}
-              placeholder="phone"
+              placeholder="Phone"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
               onChangeText={(email) => this.setState({email})}/>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/metro/26/000000/email.png'}}/>
-          <TextInput style={styles.inputs}
-              placeholder="email"
-              keyboardType="email-address"
-              underlineColorAndroid='transparent'
-              onChangeText={(fullName) => this.setState({fullName})}/>
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/material-rounded/24/000000/address.png'}}/>
-          <TextInput  multiline={true} numberOfLines={4} style={styles.textArea}
-              placeholder="address"
-              keyboardType="email-address"
-              underlineColorAndroid='transparent'
-              onChangeText={(fullName) => this.setState({fullName})}/>
         </View>
         
         <View style={styles.inputContainer}>
@@ -73,8 +39,16 @@ export default class Register extends Component {
               onChangeText={(password) => this.setState({password})}/>
         </View>
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.signupButton]} onPress={() => this.onClickListener('sign_up')}>
-          <Text style={styles.signUpText}>Sign up</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.props.navigation.navigate('HomeScreen')}>
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('restore_password')}>
+            <Text>Forgot your password?</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Register')}>
+            <Text>Register</Text>
         </TouchableHighlight>
       </View>
     );
@@ -120,15 +94,16 @@ const styles = StyleSheet.create({
     width:250,
     borderRadius:30,
   },
-  signupButton: {
-    backgroundColor: "#6A7C64",
+  loginButton: {
+    backgroundColor: "#00b5ec",
   },
-  signUpText: {
+  loginText: {
     color: 'white',
   },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
-  }
+  logo: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
+    alignSelf: "center"
+  },
 });
- 

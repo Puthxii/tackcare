@@ -82,7 +82,7 @@
     };
     render() {
       return (
-        <View style={{ backgroundColor: '#D7BDE2', flex: 1 }}>
+        <View style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
           <ScrollView keyboardShouldPersistTaps="handled">
           <Picker style={[styles.picker]} itemStyle={styles.pickerItem} selectedValue = {this.state.department} onValueChange = {book_ser => this.setState({ book_ser })}>
                  <Picker.Item label = "Select Service" value = "" />

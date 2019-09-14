@@ -121,7 +121,7 @@ export default class EditBook extends React.Component {
     
     return (
     
-        <View style={{ backgroundColor: '#D7BDE2', flex: 1 }}>
+        <View style={{ backgroundColor: '#E4E9EC', flex: 1 }}>
           <Text style={styles.textStyle}>book id: {this.state.book_id}</Text>
           <ScrollView keyboardShouldPersistTaps="handled">
             <Picker  value={this.state.book_ser} style={[styles.picker]} itemStyle={styles.pickerItem} selectedValue = {this.state.department} onValueChange = {book_ser => this.setState({ book_ser })}>
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   text: {
      fontSize: 15,
      alignSelf: 'center',
-     color: '#572D15'
+     color: '#424147'
   },
   textInput: {
     height: 40,

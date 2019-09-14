@@ -1,63 +1,95 @@
   /*Screen to view all the user*/
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Badge } from 'native-base';
-import { openDatabase } from 'react-native-sqlite-storage';
 import ManageButton from './components/ManageButton';
 import ManageButton2 from './components/ManageButton2';
 
 
-var db = openDatabase({ name: 'tc_db.db' }); 
 export default class Booked extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      FlatListItems: [],
-      book_id: '',  
+      // book_id: '',  
+      isLoading: true,
+      dataSource: []
     };
-    db.transaction(tx => {
-      tx.executeSql('SELECT * FROM booked', [], (tx, results) => {
-        var temp = [];
-        for (let i = 0; i < results.rows.length; ++i) {
-          temp.push(results.rows.item(i));
-        }
-
-        this.setState({
-          FlatListItems: temp,
-        });
-      });
-    }, function(err) {
-      alert('Open database ERROR: ' + JSON.stringify(err));
-    });
+   
   }
-  deleteBook = (book_id) => {
-      alert(book_id);
-      db.transaction(tx => {
-        tx.executeSql(
-          'DELETE FROM  booked where book_id=?',
-          [book_id],
-          (tx, results) => {
-            // console.log('Results', results.rowsAffected);
-            alert(JSON.stringify(results));
-            if (results.rowsAffected > 0) {
-              Alert.alert(
-                'Success',
-                'User deleted successfully',
-                [
-                  {
-                    text: 'Ok',
-                    onPress: () => that.props.navigation.navigate('Booked'),
-                  },
-                ],
-                { cancelable: false }
-              );
-            } else {
-              alert('Please insert a valid Book Id');
-            }
-          }
-        );
+
+  componentWillMount() {
+    
+    return fetch('http://172.16.31.116/takecare/BookedList.php')
+      .then((response) => response.json())
+      .then((responseJson) => {
+       //  let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson
+        }, function() {
+          // In this block you can do something with new state.
+        });
+      })
+      .catch((error) => {
+        console.error(error);
       });
-  };
+  }
+ 
+  GetBookIDFunction=(book_id,book_ser, book_car, book_start, book_end, price, stat, star, cus_id, book_date)=>{
+       this.props.navigation.navigate('Third', { 
+         ID : book_id,
+         SERVICE : book_ser,
+         CAR : book_car,
+         START : book_start,
+         END : book_end,
+         PRICE : price,
+         STATUS : stat,
+         STAR : star,
+         CUS : cus_id,
+         DATE : book_date
+       });
+  }
+
+  ListViewItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: .5,
+          width: "100%",
+          backgroundColor: "#000",
+        }}
+      />
+    );
+  }
+
+  // deleteBook = (book_id) => {
+  //     alert(book_id);
+  //     db.transaction(tx => {
+  //       tx.executeSql(
+  //         'DELETE FROM  booked where book_id=?',
+  //         [book_id],
+  //         (tx, results) => {
+  //           // console.log('Results', results.rowsAffected);
+  //           alert(JSON.stringify(results));
+  //           if (results.rowsAffected > 0) {
+  //             Alert.alert(
+  //               'Success',
+  //               'User deleted successfully',
+  //               [
+  //                 {
+  //                   text: 'Ok',
+  //                   onPress: () => that.props.navigation.navigate('Booked'),
+  //                 },
+  //               ],
+  //               { cancelable: false }
+  //             );
+  //           } else {
+  //             alert('Please insert a valid Book Id');
+  //           }
+  //         }
+  //       );
+  //     });
+  // };
 
 
   ListViewItemSeparator = () => {
@@ -65,21 +97,32 @@ export default class Booked extends React.Component {
       <View style={{ height: 0.2, width: '100%', backgroundColor: '#ffffff' }} />
     );
   };
-  render() {
+
+ 
+  render() { 
+    
+    if (this.state.isLoading) {
+    return (
+      <View style={{flex: 1, paddingTop: 20}}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+  
     return (
       <Container>
         <FlatList
-          data={this.state.FlatListItems}
+          data={this.state.dataSource}
           ItemSeparatorComponent={this.ListViewItemSeparator}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <View key={item.book_id} style={{ backgroundColor: '#D7BDE2', padding: 20 }}>
+            <View key={item.book_id} style={{ backgroundColor: '#E4E9EC', padding: 20 }}>
               <Text>Id: {item.book_id}</Text>
               <Text>Service: {item.book_ser}</Text>
               <Text>Car: {item.book_car}</Text>
               <Text>Start: {item.book_start}</Text>
               <Text>End: {item.book_end}</Text>
-              <Text>Date: {item.date}</Text>
+              <Text>Date: {item.book_date}</Text>
 
               <View style = {{flexDirection: 'row', justifyContent : 'space-around'}}>
               <ManageButton
@@ -99,7 +142,7 @@ export default class Booked extends React.Component {
 
         <Content />
           <Footer>
-          <FooterTab style = {{ backgroundColor: '#957DAD'}}>
+          <FooterTab style = {{ backgroundColor: '#574344'}}>
             <Button vertical onPress={() => this.props.navigation.navigate('HomeScreen')}>
               {/* <Badge><Text>2</Text></Badge> */}
               <Icon  name="home" />
@@ -109,7 +152,7 @@ export default class Booked extends React.Component {
               <Icon name="time" />
               <Text>histoy</Text>
             </Button>
-            <Button active badge vertical onPress={() => this.props.navigation.navigate('Booked')}>
+            <Button active badge vertical style={styles.active} onPress={() => this.props.navigation.navigate('Booked')}>
               <Badge ><Text>2</Text></Badge>
               <Icon active name="book" />
               <Text>book</Text>
@@ -124,3 +167,9 @@ export default class Booked extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  active: {
+      backgroundColor: '#B39C8E',
+    }
+  })

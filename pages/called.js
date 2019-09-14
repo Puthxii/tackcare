@@ -1,6 +1,6 @@
   /*Screen to view all the user*/
   import React from 'react';
-  import { FlatList, View } from 'react-native';
+  import { FlatList, StyleSheet, View } from 'react-native';
   import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Badge } from 'native-base';
 
   import { openDatabase } from 'react-native-sqlite-storage';
@@ -40,7 +40,7 @@
             ItemSeparatorComponent={this.ListViewItemSeparator}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-              <View key={item.user_id} style={{ backgroundColor: '#D7BDE2', padding: 20 }}>
+              <View key={item.user_id} style={{ backgroundColor: '#E4E9EC', padding: 20 }}>
                 <Text>Id: {item.book_id}</Text>
                 <Text>Service: {item.book_ser}</Text>
                 <Text>Car: {item.book_car}</Text>
@@ -52,13 +52,13 @@
 
           <Content />
           <Footer>
-          <FooterTab style = {{ backgroundColor: '#957DAD'}}>
+          <FooterTab style = {{ backgroundColor: '#574344'}}>
             <Button vertical onPress={() => this.props.navigation.navigate('HomeScreen')}>
               {/* <Badge><Text>2</Text></Badge> */}
               <Icon  name="home" />
               <Text>home</Text>
             </Button>
-            <Button active vertical  onPress={() => this.props.navigation.navigate('called')}>
+            <Button active vertical  style={styles.active} onPress={() => this.props.navigation.navigate('called')}>
               <Icon active name="time" />
               <Text>histoy</Text>
             </Button>
@@ -77,3 +77,10 @@
       );
     }
   }
+
+  const styles = StyleSheet.create({
+  active: {
+      backgroundColor: '#B39C8E',
+    }
+  })
+

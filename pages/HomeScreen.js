@@ -3,53 +3,11 @@ import React from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Badge } from 'native-base';
 
-import { FlatGrid } from 'react-native-super-grid';
-import Mybutton from './components/Mybutton';
-import SmallButton from './components/SmallButton';
-import imageLogo from "../img/logo_transparent.png";
-
-
-import Buttons from "./components/Buttons";
-import Mytext from './components/Mytext';
-import { openDatabase } from 'react-native-sqlite-storage';
-
-
-
-var db = openDatabase({ name: 'tc_db.db' });
 export default class HomeScreen extends React.Component {
   
   constructor(props) {
     super(props);
-    db.transaction(function(txn) {
-      txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='book'",
-        [],
-        function(tx, res) {
-          console.log('item:', res.rows.length);
-          if (res.rows.length == 0) {
-            txn.executeSql('DROP TABLE IF EXISTS book', []);
-            txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS book(book_id INTEGER PRIMARY KEY AUTOINCREMENT, book_ser VARCHAR(20), book_car VARCHAR(20), book_start VARCHAR(20), book_end VARCHAR(20))',
-              []
-            );
-          }
-        }
-      );
-      txn.executeSql(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='booked'",
-        [],
-        function(tx, res) {
-          console.log('item:', res.rows.length);
-          if (res.rows.length == 0) {
-            txn.executeSql('DROP TABLE IF EXISTS booked', []);
-            txn.executeSql(
-              'CREATE TABLE IF NOT EXISTS booked(book_id INTEGER PRIMARY KEY AUTOINCREMENT, book_ser VARCHAR(20), book_car VARCHAR(20), book_start VARCHAR(20), book_end VARCHAR(20), date VARCHAR(255))',
-              []
-            );
-          }
-        }
-      );
-    });
+   
   }
 
   static navigationOptions = ({navigation}) => {
@@ -82,18 +40,7 @@ export default class HomeScreen extends React.Component {
   
 
   render() {
-    // const items = [
-    //   { name: 'Call', link : 'Call' }, { name: 'Booking', link: 'Booking' },
-    //   { name: 'List Book', link: 'Booked' }, { name: 'AMETHYST', link: '#9b59b6' },
-    //   { name: 'WET ASPHALT', code: '#34495e' }, { name: 'GREEN SEA', code: '#16a085' },
-    //   { name: 'NEPHRITIS', code: '#27ae60' }, { name: 'BELIZE HOLE', code: '#2980b9' },
-    //   { name: 'WISTERIA', code: '#8e44ad' }, { name: 'MIDNIGHT BLUE', code: '#2c3e50' },
-    //   { name: 'SUN FLOWER', code: '#f1c40f' }, { name: 'CARROT', code: '#e67e22' },
-    //   { name: 'ALIZARIN', code: '#e74c3c' }, { name: 'CLOUDS', code: '#ecf0f1' },
-    //   { name: 'CONCRETE', code: '#95a5a6' }, { name: 'ORANGE', code: '#f39c12' },
-    //   { name: 'PUMPKIN', code: '#d35400' }, { name: 'POMEGRANATE', code: '#c0392b' },
-    //   { name: 'SILVER', code: '#bdc3c7' }, { name: 'ASBESTOS', code: '#7f8c8d' },
-    // ];
+ 
     return (
       
       <Container
@@ -149,21 +96,22 @@ export default class HomeScreen extends React.Component {
           title="Details Screen"
           customClick={() => this.props.navigation.navigate('DetailsScreen')}
         /> */}
-        <Image source={imageLogo} style={styles.logo} />
+        {/* <Image source={imageLogo} style={styles.logo} /> */}
 
         <View style = {{flexDirection: 'row', justifyContent : 'space-around'}}>
-         <SmallButton
-          title="Call"
-          customClick={() => this.props.navigation.navigate('Call')}
-        />
-         <SmallButton
-          title="Booking"
-          customClick={() => this.props.navigation.navigate('Booking')}
-        />
-          <SmallButton
-          title="Other"
-          // customClick={() => this.props.navigation.navigate('Booked')}
-        />
+         <Button  style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Call')}>
+          <Icon name="call" />
+          <Text>Call</Text>
+        </Button>
+         <Button  style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Booking')}>
+          <Icon name="book" />
+          <Text>Booking</Text>
+        </Button>
+        <Button  style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('called')}>
+          <Icon name="help" />
+          <Text></Text>
+        </Button>
+
         </View>
 
         {/* <View style = {{flexDirection: 'row', justifyContent : 'space-around'}}>
@@ -182,8 +130,8 @@ export default class HomeScreen extends React.Component {
         </View> */}
         <Content />
           <Footer>
-          <FooterTab style = {{ backgroundColor: '#957DAD'}}>
-            <Button active vertical>
+          <FooterTab style = {{ backgroundColor: '#574344'}}>
+            <Button active vertical style={styles.active}>
               {/* <Badge><Text>2</Text></Badge> */}
               <Icon active name="home" />
               <Text>home</Text>
@@ -197,9 +145,9 @@ export default class HomeScreen extends React.Component {
               <Icon name="book" />
               <Text>book</Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => this.props.navigation.navigate('Profile')}>
               <Icon name="person" />
-              <Text>Contact</Text>
+              <Text>Profile</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -237,5 +185,21 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     alignSelf: "center"
   },
+  buttonContainer: {
+    alignItems: 'center',
+    // justifyContent: 'flex-start',
+    backgroundColor: '#B39C8E',
+    color: '#ffffff',
+    padding: 10,
+    marginTop: 16,
+    // marginLeft: 35,
+    // marginRight: 35,
+    width: 75, height: 75,
+    borderRadius : 16
+  },
+  active: {
+    backgroundColor: '#B39C8E',
+
+  }
   
 });
