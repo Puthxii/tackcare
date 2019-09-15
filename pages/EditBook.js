@@ -103,14 +103,13 @@ export default class EditBook extends React.Component {
             <Mytextinput 
               value={this.state.book_start}
               placeholder="Start point"
-              // onChangeText={book_start => this.setState({ book_start })}
+              onChangeText={book_start => this.setState({ book_start })}
               style={{ padding:10 }}
             />
             <Mytextinput
               value={this.state.book_end}
                 placeholder="End point"
                 onChangeText={book_end => this.setState({ book_end })}
-                maxLength={10}
                 style={{ padding:10 }}
               />
               {/* <Mytextinput

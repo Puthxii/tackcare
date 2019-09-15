@@ -11,10 +11,10 @@ export default class HomeScreen extends React.Component {
     super(props);
     this.state = {
       images: [
-        'https://source.unsplash.com/1024x768/?nature',
+        'https://source.unsplash.com/1024x768/?tree',
         'https://source.unsplash.com/1024x768/?water',
         'https://source.unsplash.com/1024x768/?flower',
-        'https://source.unsplash.com/1024x768/?tree'
+        'https://source.unsplash.com/1024x768/?nature'
       ]
     };
   }
