@@ -19,7 +19,7 @@ export default class Booked extends React.Component {
 
   componentWillMount() {
     
-    return fetch('http://172.16.31.116/takecare/BookedList.php')
+    return fetch('http://172.16.28.148/takecare/BookedList.php')
       .then((response) => response.json())
       .then((responseJson) => {
        //  let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -29,26 +29,44 @@ export default class Booked extends React.Component {
         }, function() {
           // In this block you can do something with new state.
         });
+        // alert(JSON.stringify(responseJson))
+        let result = responseJson.map(data => data.stat);
+        // alert(result)
+        // var my_json = JSON.stringify(responseJson)
+
+        // var filtered_json = (JSON.parse(my_json), {stat: 2});
+        // let data = JSON.stringify(filtered_json.stat)
+        // data2 = responseJson
+        // alert(responseJson.book_id)
+        // alert(data)
+        if(result == 1){
+          alert("รอยืนยัน")
+        }else if(result == 1){
+          alert("ยืนยันแล้ว")
+        }else{
+
+        }
       })
       .catch((error) => {
         console.error(error);
       });
+      
   }
  
-  GetBookIDFunction=(book_id,book_ser, book_car, book_start, book_end, price, stat, star, cus_id, book_date)=>{
-       this.props.navigation.navigate('Third', { 
-         ID : book_id,
-         SERVICE : book_ser,
-         CAR : book_car,
-         START : book_start,
-         END : book_end,
-         PRICE : price,
-         STATUS : stat,
-         STAR : star,
-         CUS : cus_id,
-         DATE : book_date
-       });
-  }
+  // GetBookIDFunction=(book_id,book_ser, book_car, book_start, book_end, price, stat, star, cus_id, book_date)=>{
+  //      this.props.navigation.navigate('Third', { 
+  //        ID : book_id,
+  //        SERVICE : book_ser,
+  //        CAR : book_car,
+  //        START : book_start,
+  //        END : book_end,
+  //        PRICE : price,
+  //        STATUS : stat,
+  //        STAR : star,
+  //        CUS : cus_id,
+  //        DATE : book_date
+  //      });
+  // }
 
   ListViewItemSeparator = () => {
     return (
@@ -123,7 +141,16 @@ export default class Booked extends React.Component {
               <Text>Start: {item.book_start}</Text>
               <Text>End: {item.book_end}</Text>
               <Text>Date: {item.book_date}</Text>
-
+              <View>
+                  {
+                  item.stat == 1
+                    ?
+                    <Text style = {{ color: '#FF6800'}}>Status: Awaiting confirmation</Text> 
+                    :
+                    <Text style = {{ color: '#20FF00'}}>Status: Confirmed</Text>
+                  }
+              </View>
+                  
               <View style = {{flexDirection: 'row', justifyContent : 'space-around'}}>
               <ManageButton
               title="Edit"  
