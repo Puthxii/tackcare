@@ -17,6 +17,32 @@ export default class LoginScreen extends Component {
     Alert.alert("Alert", "Button pressed "+viewId);
   }
 
+  Checkpass = () => {
+    const { email } = this.state;
+    const { password } = this.state;
+    if (email == '0937090348' && password == '1234') {
+      Alert.alert(
+        'Success',
+        'You are Login Successfully',
+        [
+          {
+            text: 'Ok',
+            onPress: () =>
+              this.props.navigation.navigate('HomeScreen'),
+          },
+        ],
+        { cancelable: false }
+      );
+    }else if(email == null || password == null){
+      alert("Please fill Phone and Password")
+    }else {
+      alert("Phone or Password incorrect, Please try again")
+    }
+
+  }
+
+
+
   render() {
     return (
       <View style={styles.container}>
@@ -39,7 +65,7 @@ export default class LoginScreen extends Component {
               onChangeText={(password) => this.setState({password})}/>
         </View>
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.props.navigation.navigate('HomeScreen')}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.Checkpass()}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>
 

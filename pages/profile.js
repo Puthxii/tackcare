@@ -29,7 +29,7 @@ export default class Profile extends Component {
         <Content />
           <Footer>
           <FooterTab style = {{ backgroundColor: '#574344'}}>
-            <Button vertical >
+            <Button vertical onPress={() => this.props.navigation.navigate('HomeScreen')}>
               {/* <Badge><Text>2</Text></Badge> */}
               <Icon name="home" />
               <Text>home</Text>
