@@ -9,6 +9,7 @@ export default class EditBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      book_id: '',
       book_ser: '',
       book_car: '',
       book_start: '',
@@ -24,6 +25,7 @@ export default class EditBook extends React.Component {
     this.setState({ 
       book_id : this.props.navigation.state.params.book_id,
       book_ser: this.props.navigation.state.params.book_ser,
+      book_car: this.props.navigation.state.params.book_car,
       book_start: this.props.navigation.state.params.book_start,
       book_end: this.props.navigation.state.params.book_end,
       price: this.props.navigation.state.params.price,

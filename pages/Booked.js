@@ -1,6 +1,6 @@
   /*Screen to view all the user*/
 import React from 'react';
-import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native';
+import { FlatList, View, StyleSheet, ActivityIndicator,  Image, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Badge } from 'native-base';
 import ManageButton from './components/ManageButton';
 import ManageButton2 from './components/ManageButton2';
@@ -12,9 +12,16 @@ export default class Booked extends React.Component {
     this.state = {
       // book_id: '',  
       isLoading: true,
-      dataSource: []
+      dataSource: [],
+      Default_Rating: 4,
+      Max_Rating: 5,
     };
+    this.Star = 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_filled.png';
+    this.Star_With_Border = 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
    
+  }
+  UpdateRating(key) {
+    this.setState({ Default_Rating: key });
   }
 
   componentWillMount() {
@@ -52,20 +59,7 @@ export default class Booked extends React.Component {
       
   }
  
-  // GetBookIDFunction=(book_id,book_ser, book_car, book_start, book_end, price, stat, star, cus_id, book_date)=>{
-  //      this.props.navigation.navigate('Third', { 
-  //        ID : book_id,
-  //        SERVICE : book_ser,
-  //        CAR : book_car,
-  //        START : book_start,
-  //        END : book_end,
-  //        PRICE : price,
-  //        STATUS : stat,
-  //        STAR : star,
-  //        CUS : cus_id,
-  //        DATE : book_date
-  //      });
-  // }
+ 
 
   ListViewItemSeparator = () => {
     return (
@@ -79,35 +73,6 @@ export default class Booked extends React.Component {
     );
   }
 
-  // deleteBook = (book_id) => {
-  //     alert(book_id);
-  //     db.transaction(tx => {
-  //       tx.executeSql(
-  //         'DELETE FROM  booked where book_id=?',
-  //         [book_id],
-  //         (tx, results) => {
-  //           // console.log('Results', results.rowsAffected);
-  //           alert(JSON.stringify(results));
-  //           if (results.rowsAffected > 0) {
-  //             Alert.alert(
-  //               'Success',
-  //               'User deleted successfully',
-  //               [
-  //                 {
-  //                   text: 'Ok',
-  //                   onPress: () => that.props.navigation.navigate('Booked'),
-  //                 },
-  //               ],
-  //               { cancelable: false }
-  //             );
-  //           } else {
-  //             alert('Please insert a valid Book Id');
-  //           }
-  //         }
-  //       );
-  //     });
-  // };
-
 
   ListViewItemSeparator = () => {
     return (
@@ -115,8 +80,46 @@ export default class Booked extends React.Component {
     );
   };
 
- 
+  DeleteBook = () =>{ 
+    fetch('http://172.16.28.148/takecare/DeleteBook.php', {
+    method: 'POST',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      book_id : this.state.book_id
+    })
+  
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      // Showing response message coming from server after inserting records.
+      Alert.alert(responseJson);
+    }).catch((error) => {
+       console.error(error);
+    })
+    this.props.navigation.navigate('Booked');
+  }
+
   render() { 
+    let React_Native_Rating_Bar = [];
+    for (var i = 1; i <= this.state.Max_Rating; i++) {
+      React_Native_Rating_Bar.push(
+        <TouchableOpacity
+          activeOpacity={0.7}
+          key={i}
+          onPress={this.UpdateRating.bind(this, i)}>
+          <Image
+            style={styles.StarImage}
+            source={
+              i <= this.state.Default_Rating
+                ? { uri: this.Star }
+                : { uri: this.Star_With_Border }
+            }
+          />
+        </TouchableOpacity>
+      );
+    }
     
     if (this.state.isLoading) {
     return (
@@ -146,16 +149,21 @@ export default class Booked extends React.Component {
                     ?
                     <Text style = {{ color: '#FF6800'}}>Status: Awaiting confirmation</Text> 
                     :
-                    <Text style = {{ color: '#20FF00'}}>Status: Confirmed</Text>
+                    <Text style = {{ color: '#28B463'}}>Status: Confirmed</Text>
                   }
               </View>
-                  
+              <View style={styles.MainContainer}>
+       
+                <View style={styles.childView}>{React_Native_Rating_Bar}</View>
+                
+              </View>
               <View style = {{flexDirection: 'row', justifyContent : 'space-around'}}>
               <ManageButton
               title="Edit"  
               customClick={() =>  this.props.navigation.navigate('EditBook', {
                 book_id: item.book_id,
                 book_ser: item.book_ser,
+                book_car: item.book_car,
                 book_start: item.book_start,
                 book_end: item.book_end,
                 price: item.price,
@@ -168,7 +176,7 @@ export default class Booked extends React.Component {
 
               <ManageButton2
               title="Cancle"  
-              customClick={() => {this.deleteBook(item.book_id)}}
+              customClick={() => {this.DeleteBook(item.book_id)}}
                /> 
 
               </View>  
@@ -205,7 +213,41 @@ export default class Booked extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  active: {
+    active: {
       backgroundColor: '#B39C8E',
-    }
+    },
+    MainContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    childView: {
+      justifyContent: 'center',
+      flexDirection: 'row',
+      marginTop: 30,
+    },
+    button: {
+      justifyContent: 'center',
+      flexDirection: 'row',
+      marginTop: 30,
+      padding: 15,
+      backgroundColor: '#8ad24e',
+    },
+    StarImage: {
+      width: 20,
+      height: 20,
+      resizeMode: 'cover',
+    },
+    textStyle: {
+      textAlign: 'center',
+      fontSize: 23,
+      color: '#000',
+      marginTop: 15,
+    },
+    textStyleSmall: {
+      textAlign: 'center',
+      fontSize: 16,
+      color: '#000',
+      marginTop: 15,
+    },
   })

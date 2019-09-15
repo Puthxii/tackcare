@@ -2,12 +2,21 @@
 import React from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text, Badge } from 'native-base';
+import { SliderBox } from 'react-native-image-slider-box';
+
 
 export default class HomeScreen extends React.Component {
   
   constructor(props) {
     super(props);
-   
+    this.state = {
+      images: [
+        'https://source.unsplash.com/1024x768/?nature',
+        'https://source.unsplash.com/1024x768/?water',
+        'https://source.unsplash.com/1024x768/?flower',
+        'https://source.unsplash.com/1024x768/?tree'
+      ]
+    };
   }
 
   static navigationOptions = ({navigation}) => {
@@ -51,6 +60,15 @@ export default class HomeScreen extends React.Component {
           flexDirection: 'column',
           // justifyContent: 'flex-start',
         }}>
+          <SliderBox
+            images={this.state.images}
+            sliderBoxHeight={200}
+            onCurrentImagePressed={index =>
+                console.warn(`image ${index} pressed`)
+            }
+            dotColor="#FFEE58"
+            inactiveDotColor="#90A4AE"
+          />
         {/* <Mytext text="SQLite Example" /> */}
         {/* <FlatGrid
           itemDimension={100}
