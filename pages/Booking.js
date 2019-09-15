@@ -16,7 +16,11 @@
         book_car: '',
         book_start: '',
         book_end: '',
-        date: '',
+        price : '140',
+        stat : '1',
+        star : '',
+        cus_id : '1',
+        book_date : ''
       };
     }
   
@@ -26,60 +30,48 @@
        this.setState({ department: department })
     }
   
-    register_user = () => {
-      var that = this;
-      const { book_ser } = this.state;
-      const { book_car } = this.state;
-      const { book_start } = this.state;
-      const { book_end } = this.state;
-      const { date } = this.state;
-      //alert(user_name, user_contact, user_address);
-      if (book_ser) {
-        if (book_car) {
-          if (book_start) {
-            if (book_end) {
-              if (date){
-                db.transaction(function(tx) {
-                  tx.executeSql(
-                    'INSERT INTO booked (book_ser, book_car, book_start, book_end, date) VALUES (?,?,?,?,?)',
-                    [book_ser, book_car, book_start, book_end, date],
-                    (tx, results) => {
-                      console.log('Results', results.rowsAffected);
-                      if (results.rowsAffected > 0) {
-                        Alert.alert(
-                          'Success',
-                          'You are Calling Successfully, Plese wait 15 min',
-                          [
-                            {
-                              text: 'Ok',
-                              onPress: () =>
-                                that.props.navigation.navigate('HomeScreen'),
-                            },
-                          ],
-                          { cancelable: false }
-                        );
-                      } else {
-                        alert('Call Failed');
-                      }
-                    }
-                  );
-                });
-              } else {
-                alert('Please fill date');
-              }
-            } else {
-              alert('Please fill end point');
-            }
-          } else {
-            alert('Please fill Start point');
-          }
-        } else {
-          alert('Please select Car');
-        }
-      } else {
-        alert('Please select Service');
-      }
-    };
+    InsertStudentRecordsToServer = () =>{
+ 
+      fetch('http://172.16.28.148/takecare/InsertBook.php', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        
+        book_ser : this.state.book_ser,
+        book_car : this.state.book_car,
+        book_start : this.state.book_start,
+        book_end : this.state.book_end,
+        price : this.state.price,
+        stat : this.state.stat,
+        star : this.state.star,
+        cus_id : this.state.cus_id,
+        book_date : this.state.book_date
+      })
+ 
+      }).then((response) => response.json())
+          .then((responseJson) => {
+            // Showing response message coming from server after inserting records.
+          // Alert.alert(responseJson);
+          Alert.alert(
+            'Success',
+            'You are Book Successfully, Plese wait Awaiting confirmation',
+            [
+              {
+                text: 'Ok',
+                onPress: () =>
+                  this.props.navigation.navigate('HomeScreen'),
+              },
+            ],
+            { cancelable: false }
+          );
+          }).catch((error) => {
+            console.error(error);
+          });
+    }
+
     render() {
       return (
         <View style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
@@ -133,7 +125,7 @@
               
               <DatePicker
               style={styles.input}
-              date={this.state.date} //initial date from state
+              date={this.state.book_date} //initial date from state
               mode="datetime" //The enum of date, datetime and time
               placeholder="select date and time"
               format="YYYY-MM-DD hh:mm:ss a"
@@ -150,11 +142,11 @@
                 }
               }}
               
-              onDateChange={(date) => {this.setState({date: date})}}
+              onDateChange={(book_date) => {this.setState({book_date: book_date})}}
               />
               <MButton
                 title="Booking"
-                customClick={this.register_user.bind(this)}
+                customClick={this.InsertStudentRecordsToServer.bind(this)}
               />
             </KeyboardAvoidingView>
         

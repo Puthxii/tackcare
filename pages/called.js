@@ -68,7 +68,7 @@
               <Text>book</Text>
             </Button>
             <Button vertical>
-              <Icon name="person" />
+              <Icon name="person" onPress={() => this.props.navigation.navigate('Profile')}/>
               <Text>Contact</Text>
             </Button>
           </FooterTab>

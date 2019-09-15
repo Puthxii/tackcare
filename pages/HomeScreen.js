@@ -107,7 +107,7 @@ export default class HomeScreen extends React.Component {
           <Icon name="book" />
           <Text>Booking</Text>
         </Button>
-        <Button  style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('called')}>
+        <Button  style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('')}>
           <Icon name="help" />
           <Text></Text>
         </Button>

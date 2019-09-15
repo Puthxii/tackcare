@@ -2,119 +2,69 @@ import React from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Alert, StyleSheet, Picker, Text  } from 'react-native';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
-import { openDatabase } from 'react-native-sqlite-storage';
 import MButton from './components/MButton';
 import DatePicker from 'react-native-datepicker';
  
-
-var db = openDatabase({ name: 'tc_db.db' });
-
 export default class EditBook extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      book_id: '',
       book_ser: '',
       book_car: '',
       book_start: '',
       book_end: '',
-      date: '',
+      price : '140',
+      stat : '1',
+      star : '',
+      cus_id : '1',
+      book_date : ''
     };
-    const { navigation } = this.props;  
-    const book_id = navigation.getParam('book_id'); 
-    
-    if( book_id!= null){
-      db.transaction(tx => {
-        tx.executeSql(
-          'SELECT * FROM booked where book_id = ?',
-          [book_id],
-          (tx, results) => {
-            var len = results.rows.length;
-            console.log('len',len);
-            if (len > 0) {
-              // console.log(results.rows.item(0).user_contact);
-              this.setState({
-                book_id: results.rows.item(0).book_id
-              });
-              this.setState({
-                book_ser:results.rows.item(0).book_ser,
-              });
-              this.setState({
-                book_car:results.rows.item(0).book_car,
-              });
-              this.setState({
-                book_start:results.rows.item(0).book_start,
-              });
-              this.setState({
-                book_end:results.rows.item(0).book_end,
-               });
-               this.setState({
-                date:results.rows.item(0).date,
-               });
-            }else{
-              alert('No found');
-              this.setState({
-                book_ser: '',
-                book_car: '',
-                book_start: '',
-                book_end: '',
-                date: '',
-              });
-            }
-          }
-        );
-      });
-    }
+  }
+  componentWillMount(){
+    this.setState({ 
+      book_id : this.props.navigation.state.params.book_id,
+      book_ser: this.props.navigation.state.params.book_ser,
+      book_start: this.props.navigation.state.params.book_start,
+      book_end: this.props.navigation.state.params.book_end,
+      price: this.props.navigation.state.params.price,
+      stat: this.props.navigation.state.params.stat,
+      star: this.props.navigation.state.params.star,
+      cus_id: this.props.navigation.state.params.cus_id,
+      book_date: this.props.navigation.state.params.book_date,
+    })
   }
 
-  updateUser = () => {
-      var that=this;
-      const { book_id } = this.state;
-      const { book_ser } = this.state;
-      const { book_car } = this.state;
-      const { book_start } = this.state;
-      const { book_end } = this.state;
-      const { date } = this.state;
-      if (book_ser){
-        if (book_car){
-          if (book_start){
-            if (book_end){
-              if (date){
-                db.transaction((tx)=> {
-                  tx.executeSql(
-                    'UPDATE booked set book_ser=?, book_car=? , book_start=?, book_end=?, date=? where book_id=?',
-                    [book_ser, book_car, book_start, book_end, date, book_id],
-                    (tx, results) => {
-                      console.log('Results',results.rowsAffected);
-                      if(results.rowsAffected>0){
-                        Alert.alert( 'Success', 'User updated successfully',
-                          [
-                            {text: 'Ok', onPress: () => that.props.navigation.navigate('HomeScreen')},
-                          ],
-                          { cancelable: false }
-                        );
-                      }else{
-                        alert('Updation Failed');
-                      }
-                    }
-                  );
-                });
-              } else {
-                alert('Please fill date');
-              }
-            } else {
-              alert('Please fill end point');
-            }
-          } else {
-            alert('Please fill Start point');
-          }
-        } else {
-          alert('Please select Car');
-        }
-      } else {
-        alert('Please select Service');
-      }
-    };
+  UpdateBooked = () =>{
+      
+    fetch('http://172.16.28.148/takecare/Update.php', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+
+      book_id : this.state.book_id,
+      book_ser : this.state.book_ser,
+      book_car : this.state.book_car,
+      book_start : this.state.book_start,
+      book_end : this.state.book_end,
+      price : this.state.price,
+      stat : this.state.stat,
+      star : this.state.star,
+      cus_id : this.state.cus_id,
+      book_date : this.state.book_date
+
+    })
+
+    }).then((response) => response.json())
+        .then((responseJson) => {
+          // Showing response message coming from server updating records.
+          Alert.alert(responseJson);
+        }).catch((error) => {
+          console.error(error);
+        });
+  }
 
 
     render() {
@@ -169,10 +119,9 @@ export default class EditBook extends React.Component {
                 multiline={true}
                 style={{ textAlignVertical: 'top',padding:10 }}
               /> */}
-              <DatePicker
-              value={this.state.date}
+             <DatePicker
               style={styles.input}
-              date={this.state.date} //initial date from state
+              date={this.state.book_date} //initial date from state
               mode="datetime" //The enum of date, datetime and time
               placeholder="select date and time"
               format="YYYY-MM-DD hh:mm:ss a"
@@ -189,11 +138,11 @@ export default class EditBook extends React.Component {
                 }
               }}
               
-              onDateChange={(date) => {this.setState({date: date})}}
+              onDateChange={(book_date) => {this.setState({book_date: book_date})}}
               />
               <MButton
                 title="Edit Booking"
-                customClick={this.updateUser.bind(this)}
+                customClick={this.UpdateBooked.bind(this)}
               />
           </ScrollView>
       </View>

@@ -30,7 +30,7 @@ export default class Booked extends React.Component {
           // In this block you can do something with new state.
         });
         // alert(JSON.stringify(responseJson))
-        let result = responseJson.map(data => data.stat);
+        // let result = responseJson.map(data => data.stat);
         // alert(result)
         // var my_json = JSON.stringify(responseJson)
 
@@ -39,13 +39,12 @@ export default class Booked extends React.Component {
         // data2 = responseJson
         // alert(responseJson.book_id)
         // alert(data)
-        if(result == 1){
-          alert("รอยืนยัน")
-        }else if(result == 2){
-          alert("ยืนยันแล้ว")
-        }else{
-
-        }
+        // if(result == 1){
+        //   alert("รอยืนยัน")
+        // }else if(result == 2){
+        //   alert("ยืนยันแล้ว")
+        // }else{
+        // }
       })
       .catch((error) => {
         console.error(error);
@@ -154,7 +153,17 @@ export default class Booked extends React.Component {
               <View style = {{flexDirection: 'row', justifyContent : 'space-around'}}>
               <ManageButton
               title="Edit"  
-              customClick={() =>  this.props.navigation.navigate('EditBook', {book_id: item.book_id})  }  
+              customClick={() =>  this.props.navigation.navigate('EditBook', {
+                book_id: item.book_id,
+                book_ser: item.book_ser,
+                book_start: item.book_start,
+                book_end: item.book_end,
+                price: item.price,
+                stat: item.stat,
+                star: item.star,
+                cus_id: item.cus_id,
+                book_date: item.book_date,
+              })  }  
                /> 
 
               <ManageButton2
@@ -184,7 +193,7 @@ export default class Booked extends React.Component {
               <Icon active name="book" />
               <Text>book</Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => this.props.navigation.navigate('Profile')}>
               <Icon name="person" />
               <Text>Contact</Text>
             </Button>
