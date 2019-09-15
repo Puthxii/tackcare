@@ -41,7 +41,7 @@ export default class Booked extends React.Component {
         // alert(data)
         if(result == 1){
           alert("รอยืนยัน")
-        }else if(result == 1){
+        }else if(result == 2){
           alert("ยืนยันแล้ว")
         }else{
 
