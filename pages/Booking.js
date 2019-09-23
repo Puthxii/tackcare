@@ -32,7 +32,7 @@
   
     InsertStudentRecordsToServer = () =>{
  
-      fetch('http://172.16.28.148/takecare/InsertBook.php', {
+      fetch('http://172.16.156.122/takecare/InsertBook.php', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

@@ -26,7 +26,7 @@ export default class Booked extends React.Component {
 
   componentWillMount() {
     
-    return fetch('http://172.16.28.148/takecare/BookedList.php')
+    return fetch('http://172.16.156.122/takecare/BookedList.php')
       .then((response) => response.json())
       .then((responseJson) => {
        //  let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -81,7 +81,7 @@ export default class Booked extends React.Component {
   };
 
   DeleteBook = () =>{ 
-    fetch('http://172.16.28.148/takecare/DeleteBook.php', {
+    fetch('http://172.16.156.122/takecare/DeleteBook.php', {
     method: 'POST',
     headers: {
     'Accept': 'application/json',

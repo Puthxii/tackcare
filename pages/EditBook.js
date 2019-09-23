@@ -38,7 +38,7 @@ export default class EditBook extends React.Component {
 
   UpdateBooked = () =>{
       
-    fetch('http://172.16.28.148/takecare/Update.php', {
+    fetch('http://172.16.156.122/takecare/Update.php', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
